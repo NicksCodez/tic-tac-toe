@@ -1,7 +1,8 @@
 body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 10px;
   align-items: center;
   background-color: #0d1117;
   color: white;

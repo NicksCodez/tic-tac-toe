@@ -8,7 +8,29 @@
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
+    <div id="playerTurn"></div>
     <div id="boardDiv"></div>
+    <button class="restart">Restart</button>
+    <div id="playerNames">
+      <form action="">
+        <fieldset>
+          <legend>Player names</legend>
+          <div>
+            <label for="playerOneName">Player One</label>
+            <input type="text"  id="playerOneName" name="playerOneName">
+          </div>
+          <div>
+            <label for="playerTwoName">Player Two</label>
+            <input type="text"  id="playerTwoName" name="playerTwoName">
+          </div>
+          <div class="form-buttons">
+            <button class="form-submit">Submit</button>
+        </div>
+        </fieldset>
+      </form>
+    </div>
+    <div id="playerOneScore"></div>
+    <div id="playerTwoScore"></div>
   </body>
   <script src="script.js"></script>
 </html>

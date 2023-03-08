@@ -12,28 +12,58 @@ const gameBoard = (() => {
 
   let activePlayer = 0;
   let winner = -1;
+  let playerOneScore = 0;
+  let playerTwoScore = 0;
 
   function checkWinner(){
     let gameOver = 1;
     for(let i = 0; i < 3; i ++){
       if(board[i][0] !== '' && board[i][0] === board[i][1] && board[i][1] === board[i][2]){
-        winner = board[i][0] === 'X' ? 0 : 1;
+        // winner = board[i][0] === 'X' ? 0 : 1;
+        if(board[i][0] === 'X'){
+          winner = 0;
+          playerOneScore++;
+        } else {
+          winner = 1;
+          playerTwoScore++;
+        }
         alert(`Winner: ${winner}`);
         return;
       }
       if(board[0][i] !== '' && board[0][i] === board[1][i]  && board[1][i]  === board[2][i]){
-        winner = board[0][i] === 'X' ? 0 : 1;
+        // winner = board[0][i] === 'X' ? 0 : 1;
+        if(board[0][i] === 'X'){
+          winner = 0;
+          playerOneScore++;
+        } else {
+          winner = 1;
+          playerTwoScore++;
+        }
         alert(`Winner: ${winner}`);
         return;
       }
     }
     if(board[0][0] !== '' && board[0][0] === board[1][1]  && board[1][1]  === board[2][2]){
-      winner = board[0][0] === 'X' ? 0 : 1;
+      // winner = board[0][0] === 'X' ? 0 : 1;
+      if(board[0][0] === 'X'){
+        winner = 0;
+        playerOneScore++;
+      } else {
+        winner = 1;
+        playerTwoScore++;
+      }
       alert(`Winner: ${winner}`);
       return;
     }
     if(board[0][2] !== '' && board[0][2] === board[1][1]  && board[1][1]  === board[2][0]){
-      winner = board[0][2] === 'X' ? 0 : 1;
+      // winner = board[0][2] === 'X' ? 0 : 1;
+      if(board[0][2] === 'X'){
+        winner = 0;
+        playerOneScore++;
+      } else {
+        winner = 1;
+        playerTwoScore++;
+      }
       alert(`Winner: ${winner}`);
       return;
     }
@@ -71,23 +101,51 @@ const gameBoard = (() => {
     winner = -1;
     activePlayer = 0;
   }
+  
+  function getActivePlayer(){return activePlayer};
+  function getWinner(){return winner};
+  function getPlayerOneScore(){return playerOneScore};
+  function getPlayerTwoScore(){return playerTwoScore};
 
   return {
     getBoard,
     playRound,
-    resetGame
+    resetGame,
+    getActivePlayer,
+    getWinner,
+    getPlayerOneScore,
+    getPlayerTwoScore
   }
 
 })();
 
 
-const playerFactory = function(name, symbol) {
-  return {name, symbol};
+const playerFactory = (playerName) => {
+  let name = playerName;
+  function setName(newName){
+    name = newName;
+  }
+  function getName(){return name;}
+  
+  return{
+    setName,
+    getName
+  }
 }
 
 const displayController = (() => {
-  const board = gameBoard.getBoard();
   const boardDiv = document.querySelector('#boardDiv');
+  const playerTurnDiv = document.querySelector('#playerTurn');
+  const playerOneScoreDiv = document.querySelector('#playerOneScore');
+  const playerTwoScoreDiv = document.querySelector('#playerTwoScore');
+  const restartButton = document.querySelector('.restart');
+  const playerOneName = document.querySelector('input[id="playerOneName"');
+  const playerTwoName = document.querySelector('input[id="playerTwoName"');
+  const submitPlayers = document.querySelector('.form-submit');
+
+  const board = gameBoard.getBoard();
+  const playerOne = playerFactory('Player One');
+  const playerTwo = playerFactory('Player Two');
 
   function clearBoard() {
     while(boardDiv.lastChild){
@@ -97,6 +155,17 @@ const displayController = (() => {
 
   const printBoard = () => {
     clearBoard();
+    playerTurnDiv.textContent = `It is ${gameBoard.getActivePlayer() === 0 ? playerOne.getName() : playerTwo.getName()}'s turn`;
+    switch(gameBoard.getWinner()){
+      case 0:
+      case 1:
+        playerTurnDiv.textContent = `${gameBoard.getWinner() === 0 ? playerOne.getName() : playerTwo.getName()} won! Congratulations!`;
+        break;
+      case 2:
+        playerTurnDiv.textContent = 'It\'s a tie!';
+        break;
+      default: break;
+    }
     for(let i = 0; i < 3; i++){
       for(let j = 0; j < 3; j++){
         const button = document.createElement('button');
@@ -118,20 +187,39 @@ const displayController = (() => {
         boardDiv.appendChild(button);
       }
     }
+    playerOneScoreDiv.textContent = gameBoard.getPlayerOneScore();
+    playerTwoScoreDiv.textContent = gameBoard.getPlayerTwoScore();
   }
-  
+    
+    
 
     function clickHandlerBoard(e) {
       const cellRow = e.target.dataset.row;
       if(!cellRow) return;
       const cellColumn = e.target.dataset.column;
       gameBoard.playRound(cellRow, cellColumn);
+      console.log(gameBoard.getActivePlayer());
       printBoard();
     }
 
     printBoard();
 
     boardDiv.addEventListener('click', clickHandlerBoard);
+    restartButton.addEventListener('click', (e) =>{
+      e.preventDefault();
+      gameBoard.resetGame();
+      printBoard();
+    });
 
+    submitPlayers.addEventListener('click', (e) =>{
+      e.preventDefault();
+      playerOne.setName(playerOneName.value);
+      playerOneName.value = '';
+      playerTwo.setName(playerTwoName.value);
+      playerTwoName.value = '';
+      printBoard();
+    });
+    
+    
 })();
 
