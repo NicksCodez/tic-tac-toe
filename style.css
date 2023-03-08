@@ -1,0 +1,40 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d1117;
+  color: white;
+  min-height: 100vh;
+  margin: 0;
+}
+
+#boardDiv {
+  display: grid;
+  height: 500px;
+  width: 500px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0px;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  border-style: none; 
+}
+
+.middle-row {
+  border-top: 10px solid rgb(241, 218, 10);
+  border-bottom: 10px solid rgb(241, 218, 10);
+}
+
+.left-column {
+  border-right: 10px solid rgb(241, 218, 10);
+}
+
+.right-column {
+  border-left: 10px solid rgb(241, 218, 10);
+}
