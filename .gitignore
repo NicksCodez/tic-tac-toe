@@ -1,0 +1,8 @@
+node_modules/
+package-lock.json
+package.json
+.vscode/
+.eslintrc.json
+.prettierrc.json
+.prettierignore
+.eslintignore
