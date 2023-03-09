@@ -148,8 +148,8 @@ const displayController = (() => {
   const playerTwo = playerFactory('Player Two');
 
   function clearBoard() {
-    while(boardDiv.lastChild){
-      boardDiv.removeChild(boardDiv.firstChild);
+    while(boardDiv.firstChild){
+      boardDiv.removeChild(boardDiv.lastChild);
     }
   }
 
